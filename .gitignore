@@ -1,0 +1,23 @@
+# Go specific
+*.exe
+*.test
+*.prof
+*.out
+_build/
+/dist/
+/vendor/
+
+# IDE specific
+.idea/
+.vscode/
+
+# Build output
+/bin/
+/pkg/
+main
+out
+*.zip
+
+.terraform*
+*.tfstate*
+builds/
