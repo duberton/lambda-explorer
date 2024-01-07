@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -16,6 +17,7 @@ type Body struct {
 func handler(context context.Context, request events.APIGatewayProxyRequest) (string, error) {
 	var body Body
 	err := json.Unmarshal([]byte(request.Body), &body)
+	time.Sleep(3 * time.Second)
 	return fmt.Sprintf("Hello, %s", body.Name), err
 }
 
