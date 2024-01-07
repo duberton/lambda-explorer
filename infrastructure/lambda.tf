@@ -3,7 +3,7 @@ module "lambda_explorer" {
   version = "6.5.0"
 
 
-  create_lambda_function_url = false
+  create_lambda_function_url = true
   attach_tracing_policy      = true
   tracing_mode               = "Active"
   timeout                    = 30
