@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
+	"log"
 	"time"
 
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
@@ -14,11 +13,12 @@ type Body struct {
 	Name string `json:"name"`
 }
 
-func handler(context context.Context, request events.APIGatewayProxyRequest) (string, error) {
-	var body Body
-	err := json.Unmarshal([]byte(request.Body), &body)
+func handler(context context.Context, request Body) (string, error) {
+	// var body Body
+	// err := json.Unmarshal([]byte(request.Body), &body)
+	log.Printf("Event name %v", request)
 	time.Sleep(3 * time.Second)
-	return fmt.Sprintf("Hello, %s", body.Name), err
+	return fmt.Sprintf("Hello, %s", request.Name), nil
 }
 
 func main() {
