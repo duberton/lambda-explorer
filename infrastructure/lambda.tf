@@ -35,7 +35,11 @@ module "lambda_explorer" {
         "sqs:GetQueueAttributes",
         "sqs:ReceiveMessage",
         "sqs:DeleteMessage",
-        "sqs:PublishMessage"
+        "sqs:PublishMessage",
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:ListStreams"
       ],
       resources = [
         aws_sqs_queue.trigger.arn,
@@ -55,6 +59,10 @@ module "lambda_explorer" {
       service    = "sqs"
       source_arn = aws_sqs_queue.trigger.arn
     }
+    dynamodb = {
+      principal  = "dynamodb.amazonaws.com"
+      source_arn = module.dynamodb_table.dynamodb_table_stream_arn
+    }
   }
 
   event_source_mapping = {
@@ -64,6 +72,15 @@ module "lambda_explorer" {
       maximum_batching_window_in_seconds = 5
       batch_size                         = 2
       function_response_types            = ["ReportBatchItemFailures"]
+    }
+    dynamodb = {
+      event_source_arn  = module.dynamodb_table.dynamodb_table_stream_arn
+      starting_position = "LATEST"
+      filter_criteria = {
+        pattern = jsonencode({
+          eventName : ["INSERT"]
+        })
+      }
     }
   }
 
